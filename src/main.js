@@ -1,17 +1,40 @@
-let ball = document.querySelector("#ball")
-let offset = 10
-
-// setinterval
-// setInterval(()=>{
-//     ball.style.left = offset + "px";
-//     offset += 1
-// }, 10)
 
 
+let canvas = document.querySelector("canvas")
 
-function animate (){
-    ball.style.left = offset + "px"
-    offset += 1;
+canvas.width  = window.innerWidth   ;
+canvas.height = window.innerWidth  ;
+
+//method getContext
+let c = canvas.getContext("2d")
+
+
+// randomIntevall numbers
+const randomIntFromInterval = (min, max) =>  { return Math.floor(Math.random() * (max - min + 1) + min)}
+
+// Making animation
+let r = 15;
+let x = randomIntFromInterval(0 + r, window.innerWidth - r);
+let y = randomIntFromInterval(0 + r, window.innerHeight - r);
+let vx = (Math.random() - .5) * 6
+let vy = (Math.random() - .5) * 6
+
+function animate(){
+    c.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    c.beginPath()
+    c.arc(x, y, r, 0, 2 * Math.PI, true)
+    c.fillStyle = "blue"
+    c.fill()
+
+    // if (x + r > window.innerWidth || x - r < 0){
+    //     vx = -vx
+    // }
+
+    vx = x + r > window.innerWidth || x - r < 0 ? -vx : vx
+    vy = y + r > window.innerHeight || y - r < 0 ? -vy : vy
+
+    x += vx
+    y += vy
     requestAnimationFrame(animate)
 }
 
@@ -19,30 +42,3 @@ function animate (){
 animate()
 
 
-let canvas = document.querySelector("canvas")
-
-canvas.width  = window.innerWidth ;
-canvas.height = window.innerWidth ;
-
-//method getContext
-let c = canvas.getContext("2d")
-
-
-// Making animation
-let r = 40;
-let x = 50;
-let y = 50;
-let vx = 4
-
-function animateCanves (){
-    c.clearRect(0, 0, window.innerWidth, window.innerHeight)
-    c.beginPath()
-    c.arc(x, y, r, 0, 2 * Math.PI, true)
-    c.fillStyle = "blue"
-    c.fill()
-    x += vx
-    requestAnimationFrame(animateCanves)
-}
-
-
-animateCanves()
