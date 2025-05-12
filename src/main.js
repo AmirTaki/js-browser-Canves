@@ -14,13 +14,14 @@ const randomIntFromInterval = (min, max) =>  { return Math.floor(Math.random() *
 
 // Making animation : object Oriented Programming
 class Ball {
-    constructor(){
-        this.r = 10
-        this.x = randomIntFromInterval(0 + this.r, window.innerWidth - this.r);
-        this.y = randomIntFromInterval(0 + this.r, window.innerHeight - this.r);
+    constructor(x, y){
+        this.baseR = 10;
+        this.r = 10 || this.baseR
+        this.x = x || randomIntFromInterval(0 + this.r, window.innerWidth - this.r);
+        this.y = y || randomIntFromInterval(0 + this.r, window.innerHeight - this.r);
         this.vx = (Math.random() - .5) * 4
         this.vy = (Math.random() - .5) * 4
-        this.color = ['black', 'blue', "brown", 'green', 'red', 'yellow', 'pink', 'silver']
+        this.color = ['black', 'blue', "brown", 'green', 'red', 'yellow', 'pink', 'white']
         this.contColor = randomIntFromInterval(0, this.color.length -1)
         this.draw()
     }
@@ -41,9 +42,10 @@ class Ball {
 }
 
 let balls = []
-for (let i = 0 ; i < 50; i++){
-    balls.push(new Ball)
+for (let i = 0 ; i < 10; i++){
+    balls.push(new Ball())
 }
+
 
 // animate
 const animate = () => {
@@ -53,4 +55,33 @@ const animate = () => {
     })
     requestAnimationFrame(animate)
 }
+
+
+
+// click
+window.addEventListener("click", (event)=>{
+    balls.push(new Ball(event.clientX, event.clientY))
+})
+// mouse Move
+window.addEventListener("mousemove",(event)=>{
+    balls.forEach(ball =>{
+        let distance = Math.sqrt( Math.pow (event.clientX - ball.x, 2) + Math.pow (event.clientY - ball.y, 2))
+
+        if (distance < 100 && ball.r < ball.baseR * 4){
+            ball.r += 1
+        }
+
+        else if (ball.r > ball.baseR){
+            ball.r -=1
+        }
+    })
+})
+
+/// resize screen   
+window.addEventListener("resize",(e)=>{
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+})
+
+
 animate();
